@@ -1,7 +1,9 @@
 from aiogram import Bot, Router, types, F
 from aiogram.filters import Command
 from keyboard import *
+from datetime import time
 from album_creator import create_album
+from database.db_operations import add_user
 
 
 router = Router()
@@ -26,6 +28,8 @@ async def daily_horoscope(message: types.Message):
 
 @router.message(F.text == 'Установить время')
 async def change_time(message: types.Message):
+    horoscope_time_obj = time.fromisoformat('12:00:00')
+    await add_user("lalala", 23421, horoscope_time_obj)
     await message.answer('Просим прощения, данная функция находится в разработке.', reply_markup=menu_keyboard())
 
 @router.message(F.text == 'Выбрать знаки')
