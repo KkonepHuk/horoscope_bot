@@ -31,11 +31,24 @@ async def create_tables():
         await conn.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-                username TEXT UNIQUE NOT NULL,
+                first_name TEXT NOT NULL,
+                username TEXT,
+                user_id BIGINT UNIQUE NOT NULL,
                 chat_id BIGINT NOT NULL,
                 horoscope_time TIME NOT NULL
             )
         """)
+        await conn.execute("""
+            CREATE TABLE IF NOT EXISTS users_info (
+                id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                first_name TEXT UNIQUE NOT NULL,
+                username TEXT,
+                user_id BIGINT UNIQUE NOT NULL,
+                chat_id BIGINT NOT NULL,
+                horoscope_time TIME NOT NULL
+            )
+        """)
+
         await conn.execute("""
             CREATE TABLE IF NOT EXISTS zodiac_signs (
                 id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,

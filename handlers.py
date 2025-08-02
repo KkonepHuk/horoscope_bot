@@ -18,6 +18,9 @@ async def cmd_start(message: types.Message):
                          reply_markup=keyboard
     )
 
+    horoscope_time_obj = time.fromisoformat('09:00:00')
+    await add_user(message.from_user.first_name, message.from_user.username, message.from_user.id, message.chat.id, horoscope_time_obj)
+
 
 @router.message(F.text == 'Получить сегодняшний гороскоп!')
 async def daily_horoscope(message: types.Message):
@@ -28,8 +31,6 @@ async def daily_horoscope(message: types.Message):
 
 @router.message(F.text == 'Установить время')
 async def change_time(message: types.Message):
-    horoscope_time_obj = time.fromisoformat('12:00:00')
-    await add_user("lalala", 23421, horoscope_time_obj)
     await message.answer('Просим прощения, данная функция находится в разработке.', reply_markup=menu_keyboard())
 
 @router.message(F.text == 'Выбрать знаки')
