@@ -1,17 +1,15 @@
 import asyncio
-import os
 import logging
 from dotenv import load_dotenv
-from aiogram import Bot, Dispatcher
+from bot_instance import bot
+from aiogram import Dispatcher
 from handlers import router
 from database.db_start import init_db_pool, create_tables
+from cron.cron_jobs import setup_cron_jobs
 
 
 load_dotenv()  # Загрузит переменные из .env
 
-
-TOKEN = os.getenv("TOKEN")
-bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
 
@@ -25,6 +23,7 @@ logger = logging.getLogger(__name__)
 async def main():
     await init_db_pool()
     await create_tables()
+    setup_cron_jobs()
     dp.include_router(router)
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)

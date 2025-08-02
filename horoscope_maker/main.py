@@ -1,6 +1,6 @@
-from core.horoscope_text import get_horoscope_text
-from core.horoscope_img import get_horoscope_img
-from core.consts import SIGNS
+from horoscope_maker.core.horoscope_text import get_horoscope_text
+from horoscope_maker.core.horoscope_img import get_horoscope_img
+from horoscope_maker.core.consts import SIGNS
 
 
 def get_all_horoscopes():
@@ -10,5 +10,6 @@ def get_all_horoscopes():
 
 
 if __name__ == '__main__':
+    print("Succesfully started!")
     get_all_horoscopes()
     print("Done!")

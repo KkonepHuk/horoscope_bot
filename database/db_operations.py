@@ -24,3 +24,11 @@ async def add_user(first_name, username, user_id, chat_id, horoscope_time):
             logger.info(f"User [{username}] added successfully!")
         else:
             logger.warning(f"User [{username}] already exist!")
+
+async def get_all_chat_ids():
+    db_pool = get_db_pool()
+    async with db_pool.acquire() as conn:
+        records = await conn.fetch("SELECT chat_id FROM users")
+        return [record['chat_id'] for record in records]
+            
+

@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from core.text_formatting import format
+from horoscope_maker.core.text_formatting import format
 #from core.consts import RUS_TO_ENG, ENG_TO_RUS
 
 '''
