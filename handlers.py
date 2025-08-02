@@ -1,4 +1,4 @@
-from aiogram import Bot, Router, types, F
+from aiogram import Router, types, F
 from aiogram.filters import Command
 from keyboard import *
 from datetime import time
@@ -18,8 +18,8 @@ async def cmd_start(message: types.Message):
                          reply_markup=keyboard
     )
 
-    horoscope_time_obj = time.fromisoformat('09:00:00')
-    await add_user(message.from_user.first_name, message.from_user.username, message.from_user.id, message.chat.id, horoscope_time_obj)
+    deafoult_time_obj = time.fromisoformat('09:00:00')
+    await add_user(message.from_user.first_name, message.from_user.username, message.from_user.id, message.chat.id, deafoult_time_obj)
 
 
 @router.message(F.text == 'Получить сегодняшний гороскоп!')
