@@ -14,6 +14,7 @@ dp = Dispatcher()
 
 
 logging.basicConfig(
+    filename='horoscope_bot.log',
     level=logging.INFO,  # минимальный уровень сообщений (INFO и выше)
     format='%(asctime)s %(levelname)s %(message)s',  # формат вывода: время, уровень, сообщение
     datefmt='%Y-%m-%d %H:%M:%S'
