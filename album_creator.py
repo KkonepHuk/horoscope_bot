@@ -6,7 +6,7 @@ import os
 def create_album():
     img_paths = []
     for sign in SIGNS:
-        IMAGE_PATH = f'/Users/nikitos/Desktop/code/telegram_bots/horoscope_bot/horoscope_maker/images/{sign}.jpg'
+        IMAGE_PATH = f'horoscope_maker/images/{sign}.jpg'
         if os.path.exists(IMAGE_PATH):
             img_paths.append(IMAGE_PATH)
         else:
