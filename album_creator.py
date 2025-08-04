@@ -14,14 +14,14 @@ def create_album():
 
     album1 = []
     album2 = []
-    for path in img_paths[:7]:
+    for path in img_paths[:6]:
         try:
             input_file = FSInputFile(path)
             album1.append(InputMediaPhoto(media=input_file))
         except Exception as e:
             print(f"Ошибка при обработке файла {path}: {e}")
 
-    for path in img_paths[7:]:
+    for path in img_paths[6:]:
         try:
             input_file = FSInputFile(path)
             album2.append(InputMediaPhoto(media=input_file))
