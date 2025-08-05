@@ -1,6 +1,5 @@
 import random
 from bot_instance import bot
-from horoscope_maker.core.consts import SIGNS
 from cron.daily_messages import DAILY_MESSAGES
 from database.db_operations import get_all_chat_ids
 from album_creator import create_album
