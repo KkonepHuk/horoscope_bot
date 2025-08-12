@@ -58,14 +58,16 @@ async def create_tables():
             ('libra'), ('scorpio'), ('sagittarius'), ('capricorn'), ('aquarius'), ('pisces')
             ON CONFLICT (name) DO NOTHING
         """)
-        await conn.execute("""
-            INSERT INTO user_zodiac_signs (user_id, zodiac_sign_id)
-            SELECT users.user_id, zodiac_signs.id
-            FROM users
-            CROSS JOIN zodiac_signs
-            ON CONFLICT (user_id, zodiac_sign_id) DO NOTHING
-        """)
-
         logger.info("DB schema and zodiac signs ready.")
         
 
+'''
+--- Вставка в таблицу для уже созданных пользователей ---
+
+    INSERT INTO user_zodiac_signs (user_id, zodiac_sign_id)
+    SELECT users.user_id, zodiac_signs.id
+    FROM users
+    CROSS JOIN zodiac_signs
+    ON CONFLICT (user_id, zodiac_sign_id) DO NOTHING;
+
+'''
