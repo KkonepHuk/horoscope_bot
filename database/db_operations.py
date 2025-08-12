@@ -42,7 +42,6 @@ async def get_zodiac_signs_for_user(user_id):
                                     WHERE user_id = $1
                                     ''', user_id)
         return [record['zodiac_sign'] for record in records]
-    logger.info(f'{[record['zodiac_sign'] for record in records]}')
 
 async def save_selected_signs(user_id, selected_signs):
     db_pool = get_db_pool()
