@@ -44,14 +44,21 @@ async def get_zodiac_signs_for_user(user_id):
         return [record['zodiac_sign'] for record in records]
     logger.info(f'{[record['zodiac_sign'] for record in records]}')
 
+async def save_selected_signs(user_id, selected_signs):
+    db_pool = get_db_pool()
+    async with db_pool.acquire() as conn:
+        #Сначала удаляем все записи для пользователя
+        await conn.execute('DELETE FROM user_zodiac_signs WHERE user_id = $1', user_id)
+        
+        #Получаем id знаков по их именам (англ. или рус., в зависимости от твоей БД)
+        records = await conn.fetch('SELECT id FROM zodiac_signs WHERE name = ANY($1)', selected_signs)
+        zodiac_ids = [record['id'] for record in records]
 
-'''
---- Вставка в таблицу для уже созданных пользователей ---
+        # Вставляем новые записи
+        for zodiac_id in zodiac_ids:
+            await conn.execute('''
+                               INSERT INTO user_zodiac_signs (user_id, zodiac_sign_id)
+                               VALUES ($1, $2)
+                               ON CONFLICT DO NOTHING
+                               ''', user_id, zodiac_id)
 
-    INSERT INTO user_zodiac_signs (user_id, zodiac_sign_id)
-    SELECT users.user_id, zodiac_signs.id
-    FROM users
-    CROSS JOIN zodiac_signs
-    ON CONFLICT (user_id, zodiac_sign_id) DO NOTHING;
-
-'''

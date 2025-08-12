@@ -49,8 +49,8 @@ def create_album(zodiacs):
                 album.append(InputMediaPhoto(media=input_file))
             except Exception as e:
                 print(f"Ошибка при обработке файла {path}: {e}")
-
-        return album
+        return (album)
+    
     elif len(zodiacs) > 10: # если у человека указано >10 знаков, упаковываем их в 1 альбом
         album1 = []
         album2 = []
