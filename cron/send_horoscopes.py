@@ -10,7 +10,12 @@ async def send_all_horoscopes_to_all_users():
     for chat_id in chat_ids:
         zodiacs = await get_zodiac_signs_for_user(chat_id)
         albums = create_album(zodiacs)
+
         daily_message = random.choice(DAILY_MESSAGES)
         await bot.send_message(chat_id=chat_id, text=daily_message)
-        for album in albums:
-            await bot.send_media_group(chat_id=chat_id, media=album)
+        
+        if len(albums) == 2:
+            for album in albums:
+                await bot.send_media_group(chat_id=chat_id, media=album)
+        else:
+            await bot.send_media_group(chat_id=chat_id, media=albums)
