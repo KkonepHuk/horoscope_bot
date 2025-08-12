@@ -13,8 +13,8 @@ async def send_all_horoscopes_to_all_users():
 
         daily_message = random.choice(DAILY_MESSAGES)
         await bot.send_message(chat_id=chat_id, text=daily_message)
-        
-        if len(albums) == 2:
+
+        if isinstance(albums, tuple): #Если 2 альбома
             for album in albums:
                 await bot.send_media_group(chat_id=chat_id, media=album)
         else:

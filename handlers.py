@@ -35,7 +35,7 @@ async def daily_horoscope(message: types.Message):
     zodiacs = await get_zodiac_signs_for_user(message.from_user.id)
     logger.info(f'Zodiacs of user {message.from_user.id}: {zodiacs}')
     albums = create_album(zodiacs)
-    if len(albums) == 2:
+    if isinstance(albums, tuple): #Если 2 альбома
         for album in albums:
             await message.answer_media_group(album)
     else:
