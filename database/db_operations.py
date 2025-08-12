@@ -1,6 +1,7 @@
 import logging
 from dotenv import load_dotenv
 from database.db_start import get_db_pool
+from horoscope_maker.core.consts import SIGNS
 
 
 load_dotenv()  # Загружаем переменные из .env
@@ -21,9 +22,20 @@ async def add_user(first_name, username, user_id, chat_id, horoscope_time):
             horoscope_time
         )
         if result == "INSERT 0 1":
-            logger.info(f"User [{username}] added successfully!")
+            logger.info(f"User [{username}] added into TABLE [users] successfully!")
         else:
-            logger.warning(f"User [{username}] already exist!")
+            logger.warning(f"User [{username}] already exist in TABLE [users]!")
+        
+        records = await conn.fetch(
+            'SELECT id FROM zodiac_signs WHERE name = ANY($1)', SIGNS
+        )
+        zodiac_ids = [record['id'] for record in records]
+
+        for zodiac_id in zodiac_ids:
+            await conn.execute('''
+                INSERT INTO user_zodiac_signs (user_id, zodiac_sign_id) VALUES ($1, $2)
+                ON CONFLICT DO NOTHING
+            ''', user_id, zodiac_id)
 
 async def get_all_chat_ids():
     db_pool = get_db_pool()
@@ -49,7 +61,7 @@ async def save_selected_signs(user_id, selected_signs):
         #Сначала удаляем все записи для пользователя
         await conn.execute('DELETE FROM user_zodiac_signs WHERE user_id = $1', user_id)
         
-        #Получаем id знаков по их именам (англ. или рус., в зависимости от твоей БД)
+        #Получаем id знаков по их именам
         records = await conn.fetch('SELECT id FROM zodiac_signs WHERE name = ANY($1)', selected_signs)
         zodiac_ids = [record['id'] for record in records]
 
