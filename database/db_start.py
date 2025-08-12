@@ -47,7 +47,7 @@ async def create_tables():
         """)
         await conn.execute("""
             CREATE TABLE IF NOT EXISTS user_zodiac_signs (
-                user_id BIGINT REFERENCES users(id) ON DELETE CASCADE,
+                user_id BIGINT REFERENCES users(user_id) ON DELETE CASCADE,
                 zodiac_sign_id INT REFERENCES zodiac_signs(id) ON DELETE SET NULL,
                 PRIMARY KEY (user_id, zodiac_sign_id)
             )
@@ -57,6 +57,13 @@ async def create_tables():
             ('aries'), ('taurus'), ('gemini'), ('cancer'), ('leo'), ('virgo'),
             ('libra'), ('scorpio'), ('sagittarius'), ('capricorn'), ('aquarius'), ('pisces')
             ON CONFLICT (name) DO NOTHING
+        """)
+        await conn.execute("""
+            INSERT INTO user_zodiac_signs (user_id, zodiac_sign_id)
+            SELECT users.user_id, zodiac_signs.id
+            FROM users
+            CROSS JOIN zodiac_signs
+            ON CONFLICT (user_id, zodiac_sign_id) DO NOTHING
         """)
 
         logger.info("DB schema and zodiac signs ready.")

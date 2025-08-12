@@ -1,9 +1,16 @@
+import logging
 from aiogram import Router, types, F
 from aiogram.filters import Command
 from keyboard import *
 from datetime import time
+from dotenv import load_dotenv
 from album_creator import create_album
-from database.db_operations import add_user
+from database.db_operations import add_user, get_zodiac_signs_for_user
+
+
+
+load_dotenv()  # Загружаем переменные из .env
+logger = logging.getLogger(__name__)
 
 
 router = Router()
@@ -24,9 +31,11 @@ async def cmd_start(message: types.Message):
 
 @router.message(F.text == 'Получить сегодняшний гороскоп!')
 async def daily_horoscope(message: types.Message):
-    album1, album2 = create_album()
-    await message.answer_media_group(album1)
-    await message.answer_media_group(album2)
+    zodiacs = await get_zodiac_signs_for_user(message.from_user.id)
+    logger.info(f'Zodiacs of user {message.from_user.id}: {zodiacs}')
+    albums = create_album(zodiacs)
+    for album in albums:
+        await message.answer_media_group(album)
     await message.answer('Вот ваш гороскоп!', reply_markup=menu_keyboard())
 
 @router.message(F.text == 'Установить время')

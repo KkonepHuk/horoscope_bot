@@ -9,6 +9,7 @@ def setup_cron_jobs():
     scheduler.add_job(
         send_all_horoscopes_to_all_users,
         CronTrigger(hour=9, minute=0),  # Каждый день в 9:00
+        #CronTrigger(minute='*'), # Каждую минуту
         name='Send daily horoscopes to users'
     )
 

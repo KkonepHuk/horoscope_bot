@@ -30,5 +30,28 @@ async def get_all_chat_ids():
     async with db_pool.acquire() as conn:
         records = await conn.fetch("SELECT chat_id FROM users")
         return [record['chat_id'] for record in records]
-            
 
+async def get_zodiac_signs_for_user(user_id):
+    db_pool = get_db_pool()
+    async with db_pool.acquire() as conn:
+        records = await conn.fetch(f'''
+                                    SELECT zodiac_signs.name AS zodiac_sign
+                                    FROM user_zodiac_signs
+                                    INNER JOIN zodiac_signs 
+                                    ON user_zodiac_signs.zodiac_sign_id = zodiac_signs.id
+                                    WHERE user_id = $1
+                                    ''', user_id)
+        return [record['zodiac_sign'] for record in records]
+    logger.info(f'{[record['zodiac_sign'] for record in records]}')
+
+
+'''
+--- Вставка в таблицу для уже созданных пользователей ---
+
+    INSERT INTO user_zodiac_signs (user_id, zodiac_sign_id)
+    SELECT users.user_id, zodiac_signs.id
+    FROM users
+    CROSS JOIN zodiac_signs
+    ON CONFLICT (user_id, zodiac_sign_id) DO NOTHING;
+
+'''
