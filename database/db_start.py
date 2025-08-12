@@ -54,10 +54,11 @@ async def create_tables():
         """)
         await conn.execute("""
             INSERT INTO zodiac_signs (name) VALUES
-            ('Овен'), ('Телец'), ('Близнецы'), ('Рак'), ('Лев'), ('Дева'),
-            ('Весы'), ('Скорпион'), ('Стрелец'), ('Козерог'), ('Водолей'), ('Рыбы')
+            ('aries'), ('taurus'), ('gemini'), ('cancer'), ('leo'), ('virgo'),
+            ('libra'), ('scorpio'), ('sagittarius'), ('capricorn'), ('aquarius'), ('pisces')
             ON CONFLICT (name) DO NOTHING
         """)
+
         logger.info("DB schema and zodiac signs ready.")
         
 
